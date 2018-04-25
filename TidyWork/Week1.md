@@ -128,7 +128,7 @@ gganimate(p2, ani.width = 1250, ani.height = 585, "rates.gif", title_frame = TRU
 
 ![](rates.gif)
 
-A good example where an animation does not make the story clearer!
+A good example where an animation **does not** make the story clearer!
 
 Let's play with the `geofacet` library, see if that can clear things up!
 
@@ -157,40 +157,58 @@ ggplot(ts, aes(year, cost)) +
 
 ![](Week1_files/figure-markdown_github/unnamed-chunk-5-1.png)
 
-Nice function but doesn't quite show the growth hapening.
+Nice function but the plots are too small for informative axes and the visualization doesn't quite have the overall punch I would like.
 
 Let's try making a smooth animated time series plot with a little interpolation help from `tweenr`!
 
 ``` r
 #### playing with tweenr
+## Code adapted from: http://lenkiefer.com/2018/03/18/pipe-tweenr/
 
 library(tweenr)
 library(animation)
 
-ts_fil <- ts %>% filter(State %in% c("California", "Vermont", "Illinois", "Wyoming", "Washington", "Florida"))
+# filter to just interesting states
+ts_fil <- ts %>% 
+  filter(State %in% c("California", "Vermont", "Illinois", "Wyoming", 
+                      "Washington", "Florida"))
 
-plot_data_tween <- tween_elements(ts_fil, time = "year", group = "State", ease = "ease", nframes = 48)
-df_tween_appear <- tween_appear(plot_data_tween, time = "year", nframes = 48)
-# df_tween_appear$date <- as.POSIXct(as.Date("2000-01-01")+df_tween_appear$day)
+plot_tween <- tween_elements(ts_fil, time = "year", group = "State", 
+                             ease = "ease", nframes = 48)
+df_tween <- tween_appear(plot_tween, time = "year", nframes = 48)
 
 # add pause at end of animation
-df_tween_appear <- df_tween_appear %>% keep_state(20)
-summary(df_tween_appear)
-# filter(df_tween_appear, .frame==334 & date>"2018-03-01")
+df_tween <- df_tween %>% keep_state(20)
+summary(df_tween)
 
-make_plot_appear <- function(i) {
+make_plot <- function(i) {
   plot_data <-
-    df_tween_appear %>%
+    df_tween %>%
     filter(.frame == i, .age > -.5)
   p <- plot_data %>%
     ggplot() +
     geom_line(aes(x = yr_start, y = cost, color = .group), size = 1.3) +
-    geom_point(data = . %>% filter(yr_start == max(yr_start)), mapping = aes(x = yr_start, y = cost, color = .group), size = 3, stroke = 1.5) +
-    geom_point(data = . %>% filter(yr_start == max(yr_start)), mapping = aes(x = yr_start, y = cost, color = .group), size = 2) +
-    geom_text(data = . %>% filter(yr_start == max(yr_start)), mapping = aes(x = yr_start, y = cost, label = .group, color = .group), nudge_x = 7, hjust = -0.4, fontface = "bold") +
-    geom_line(data = ts, aes(x = yr_start, y = cost, group = State), alpha = 0.25, color = "darkgray") +
+    geom_point(
+      data = . %>% filter(yr_start == max(yr_start)),
+      mapping = aes(x = yr_start, y = cost, color = .group),
+      size = 3, stroke = 1.5
+    ) +
+    geom_point(
+      data = . %>% filter(yr_start == max(yr_start)),
+      mapping = aes(x = yr_start, y = cost, color = .group), size = 2
+    ) +
+    geom_text(
+      data = . %>% filter(yr_start == max(yr_start)),
+      mapping = aes(
+        x = yr_start, y = cost, label = .group,
+        color = .group
+      ), nudge_x = 7, hjust = -0.4, fontface = "bold"
+    ) +
+    geom_line(data = ts, aes(x = yr_start, y = cost, group = State), 
+              alpha = 0.25, color = "darkgray") +
     theme_minimal(base_family = "sans") +
-    scale_color_manual(values = c("#fec44f", "#253494", "#f46d43", "#1a9850", "#542788", "#993404")) +
+    scale_color_manual(values = c("#fec44f", "#253494", "#f46d43", 
+                                  "#1a9850", "#542788", "#993404")) +
     scale_x_date(
       limits = c(as.Date("2004-08-01"), as.Date("2016-01-01")),
       date_breaks = "1 year", date_labels = "%Y"
@@ -217,10 +235,10 @@ make_plot_appear <- function(i) {
 
 oopt <- ani.options(interval = 1 / 10)
 saveGIF({
-  for (i in 1:max(df_tween_appear$.frame)) {
-    g <- make_plot_appear(i)
+  for (i in 1:max(df_tween$.frame)) {
+    g <- make_plot(i)
     print(g)
-    print(paste(i, "out of", max(df_tween_appear$.frame)))
+    print(paste(i, "out of", max(df_tween$.frame)))
     ani.pause()
   }
 }, movie.name = "tuition2.gif", ani.width = 700, ani.height = 540)
