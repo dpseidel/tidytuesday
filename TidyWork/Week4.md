@@ -8,39 +8,9 @@ Load data and libraries
 
 ``` r
 library(tidyverse)
-```
-
-    ## ── Attaching packages ───────────────────────────────────────────────────────────── tidyverse 1.2.1 ──
-
-    ## ✔ ggplot2 2.2.1.9000     ✔ purrr   0.2.4     
-    ## ✔ tibble  1.4.2          ✔ dplyr   0.7.4     
-    ## ✔ tidyr   0.8.0          ✔ stringr 1.3.0     
-    ## ✔ readr   1.1.1          ✔ forcats 0.3.0
-
-    ## ── Conflicts ──────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
-    ## ✖ dplyr::filter() masks stats::filter()
-    ## ✖ dplyr::lag()    masks stats::lag()
-    ## ✖ dplyr::vars()   masks ggplot2::vars()
-
-``` r
 library(printr)
 
 salaries <- read_csv("../data/week4_australian_salary.csv")
-```
-
-    ## Warning: Missing column names filled in: 'X1' [1]
-
-    ## Parsed with column specification:
-    ## cols(
-    ##   X1 = col_integer(),
-    ##   gender_rank = col_integer(),
-    ##   occupation = col_character(),
-    ##   gender = col_character(),
-    ##   individuals = col_integer(),
-    ##   average_taxable_income = col_integer()
-    ## )
-
-``` r
 # looks like we are likely going to need some stringr to categorize these.
 
 # Let's look at just STEM fields broadly
@@ -58,8 +28,8 @@ df_sal <- salaries %>%
        !(str_detect(occupation, "s*ales"))), 1, 0))
 ```
 
-Let's look at gender disparity in these STEM fields
-===================================================
+Let's look at gender/pay disparity in these STEM fields
+=======================================================
 
 ``` r
 # what are those numbers actually?
@@ -87,56 +57,72 @@ gender_ratios <- c(
   STEM_ratio = STEM_gender_disparity[2, "STEMtotals"] / STEM_gender_disparity[1, "STEMtotals"],
   total_ratio = STEM_gender_disparity[2, "total"] / STEM_gender_disparity[1, "total"]
 )
-#gender_ratios
+gender_ratios
+```
 
+    ## $STEM_ratio.STEMtotals
+    ## [1] 2.595869
+    ## 
+    ## $total_ratio.total
+    ## [1] 1.09325
+
+``` r
 # what's a better way than bar charts for looking at proportions? waffle charts!
 # I want to account for STEM versus not STEM and also Male versus Female.
 
 #install.packages("waffle")
 library(waffle) 
-parts <- df_sal %>% 
+parts_gender <- df_sal %>% 
   group_by(gender, STEM) %>% 
   summarise(total = sum(individuals)) %>% pull(total)
-names(parts) <- c("Females", "Females in STEM", "Males", "Males in STEM")
-parts <- c(parts[3:4], parts[1:2]) # hacky reorder
+names(parts_gender) <- c("Females (~4.8M)", "Females in STEM (~138K)", "Males (~5M)", "Males in STEM (~359K)")
+parts_gender <- c(parts_gender[3:4], parts_gender[1:2]) # hacky reorder
 
-
-waffle(parts/91500, # resize
-       colors = c("#92c5de", "#0571b0", "#f4a582", "#ca0020")) +
-   theme(plot.title = element_text(size = 18, hjust = .4),
-         legend.text = element_text(size = 12)) +
-  labs(
-      x = "", y = "",
-      title = "Gender Disparity in STEM Fields",
-      caption = "Tidy Tuesday Week 2, Data Source: data.gov.au"
-    )
+signif(parts_gender, 3)
 ```
 
-![](Week4_files/figure-markdown_github/unnamed-chunk-2-1.png)
-
-Really makes the ratios stand out!
-
-Now for pay disparity...
-========================
+    ##             Males (~5M)   Males in STEM (~359K)         Females (~4.8M) 
+    ##                 5020000                  359000                 4780000 
+    ## Females in STEM (~138K) 
+    ##                  138000
 
 ``` r
-parts <- df_sal %>% 
+waffle(parts_gender/91500, # resize
+       colors = c("#92c5de", "#0571b0", "#f4a582", "#ca0020")) +
+   theme(plot.title = element_text(size = 18, hjust = .4),
+         legend.text = element_text(size = 12), 
+         plot.caption = element_text(hjust=0)) +
+  labs(title = "Gender Pay Disparity in Australian STEM",
+       subtitle = "Tidy Tuesday Week 4, data: data.gov.au",
+        caption = "1 box = 91500K people") -> A
+```
+
+``` r
+parts_dollars <- df_sal %>% 
   mutate(total_income = as.numeric(individuals)*as.numeric(average_taxable_income)) %>% 
   group_by(gender, STEM) %>% 
   summarise(total = sum(total_income, na.rm = T)) %>% pull(total)
-names(parts) <- c("Female $$", "Female STEM $$", "Male $$", "Male STEM $$")
-parts <- c(parts[3:4], parts[1:2]) # hacky reorder
-
-
-waffle(parts/5700000000, # resize
-       colors = c("#92c5de", "#0571b0", "#f4a582", "#ca0020")) +
-   theme(plot.title = element_text(size = 18, hjust = .4),
-         legend.text = element_text(size = 12)) +
-  labs(
-      x = "", y = "",
-      title = "Gender Pay Disparity in Australian STEM",
-      caption = "Tidy Tuesday Week 2, Data Source: data.gov.au"
-    )
+names(parts_dollars) <- c("Female $$ (~230B)", "Female STEM $$ (~10B)", "Male $$ (~363B)", "Male STEM $$ (~36B)")
+parts_dollars <- c(parts_dollars[3:4], parts_dollars[1:2]) # hacky reorder
+signif(parts_dollars, 3)
 ```
 
-![](Week4_files/figure-markdown_github/unnamed-chunk-3-1.png)
+    ##       Male $$ (~363B)   Male STEM $$ (~36B)     Female $$ (~230B) 
+    ##              3.63e+11              3.62e+10              2.30e+11 
+    ## Female STEM $$ (~10B) 
+    ##              1.01e+10
+
+``` r
+waffle(parts_dollars/5700000000, # resize
+       colors = c("#92c5de", "#0571b0", "#f4a582", "#ca0020")) +
+   theme(plot.title = element_text(size = 18, hjust = .4),
+         legend.text = element_text(size = 12), 
+         plot.caption = element_text(hjust=0)) +
+  labs(caption = "1 box = $5.7B") -> B 
+```
+
+``` r
+iron(A, B)
+```
+
+![](Week4_files/figure-markdown_github/unnamed-chunk-4-1.png)
