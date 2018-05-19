@@ -51,7 +51,18 @@ main_killers <- mortality_long %>%
 
 # Make a basic plot
 ```{r}
-# basic plot
+ggplot(main_killers, aes(x = fct_infreq(main_cause))) + #LOVE me some forcats
+  geom_bar(aes(color = main_cause)) + 
+  my_theme +
+  ggtitle("Main causes of death worldwide \n 1990-2016") +
+  ylab("Frequency") +
+  xlab("Top cause of death \n(for a given country and year)")
+# i'm getting all this striping because of the factor "stack". 
+# i'd like to know how to ignore that... 
+
+
+
+# dodge plot
 ggplot(main_killers, aes(x = fct_infreq(main_cause))) + #LOVE me some forcats
   geom_bar(position = "dodge") + 
   my_theme +

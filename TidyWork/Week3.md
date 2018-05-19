@@ -53,7 +53,23 @@ Make a basic plot
 =================
 
 ``` r
-# basic plot
+ggplot(main_killers, aes(x = fct_infreq(main_cause))) + #LOVE me some forcats
+  geom_bar(aes(color = main_cause)) + 
+  my_theme +
+  ggtitle("Main causes of death worldwide \n 1990-2016") +
+  ylab("Frequency") +
+  xlab("Top cause of death \n(for a given country and year)")
+```
+
+![](Week3_files/figure-markdown_github/unnamed-chunk-4-1.png)
+
+``` r
+# i'm getting all this striping because of the factor "stack". 
+# i'd like to know how to ignore that... 
+
+
+
+# dodge plot
 ggplot(main_killers, aes(x = fct_infreq(main_cause))) + #LOVE me some forcats
   geom_bar(position = "dodge") + 
   my_theme +
@@ -62,7 +78,7 @@ ggplot(main_killers, aes(x = fct_infreq(main_cause))) + #LOVE me some forcats
   xlab("Top cause of death \n(for a given country and year)")
 ```
 
-![](Week3_files/figure-markdown_github/unnamed-chunk-4-1.png)
+![](Week3_files/figure-markdown_github/unnamed-chunk-4-2.png)
 
 Okay. While I think that's beautiful, it's admittedly not the best communication tool. It looks like a skyline :waxing\_gibbous\_moon: :city\_sunset: :smile:
 
