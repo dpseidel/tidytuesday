@@ -9,7 +9,7 @@ library(tidyverse)
 library(ggthemes)
 library(usmapdata)
 
-acs <- read_csv("../data/acs2015_county_data.csv")
+acs <- read_csv("../data/week5_acs2015_county_data.csv")
 ```
 
 Playing with census data
@@ -98,7 +98,7 @@ county_plot(TotalPop)
 
 I've played a little with `plotly` and would love to make its `tooltip` columns dynamically programmed but that might be a bit much for me right now. Instead, I thought I would play with `sf` and `mapview` a bit.
 
-I'd still like to make this interactive -- so you can chose a new column to display from a dropdown... but the only way I can think to do that is with a shiny app. I wonder if that is doable in `leaflet` or `mapview` proper. For now, I can add them individuals as layers and "burst"... then they are interactive in the layer menu and can be turned on or off. Not perfect but a neat option when you don't want to build out a full custom webapp.
+I'd still like to make this interactive -- so you can chose a new column to display from a dropdown... but the only way I can think to do that is with a shiny app. I wonder if that is doable in `leaflet` or `mapview` proper. For now, I can add them individuals as layers and "burst"... then they are interactive in the layer menu and can be turned on or off. Not perfect but a neat option when you don't want to build out a full custom webapp. On the github Markdown this will just be a screenshot but see [my website](danaseidel.com) for the fully interactive html version.
 
 ``` r
 library(mapview)

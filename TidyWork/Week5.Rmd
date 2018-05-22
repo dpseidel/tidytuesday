@@ -14,7 +14,7 @@ library(tidyverse)
 library(ggthemes)
 library(usmapdata)
 
-acs <- read_csv("../data/acs2015_county_data.csv")
+acs <- read_csv("../data/week5_acs2015_county_data.csv")
 ```
 
 # Playing with census data
