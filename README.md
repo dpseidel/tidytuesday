@@ -28,6 +28,11 @@ We welcome all newcomers, enthusiasts, and experts to participate, but be mindfu
 
 ***
 
+## Submitting Datasets
+Want to submit an interesting dataset? Please open an [Issue](https://github.com/rfordatascience/tidytuesday/issues) and post a link to the article (or blogpost, etc) using the data, then we can discuss adding it to a future TidyTuesday Event!
+
+***
+
 # DataSets
 ## 2018
 | Week | Date | Data | Source | Article
@@ -39,8 +44,13 @@ We welcome all newcomers, enthusiasts, and experts to participate, but be mindfu
 | 5 | 2018-04-30 | [ACS Census Data (2015)](https://github.com/rfordatascience/tidytuesday/blob/master/data/week5_acs2015_county_data.csv) | [census.gov](https://factfinder.census.gov/faces/nav/jsf/pages/index.xhtml) , [Kaggle](https://www.kaggle.com/muonneutrino/us-census-demographic-data)  | No article |
 | 6 | 2018-05-07| [Global Coffee Chains](https://github.com/rfordatascience/tidytuesday/blob/master/data/week6_coffee_chains.xlsx) | [Starbucks: kaggle.com](https://www.kaggle.com/starbucks/store-locations) , [Tim Horton: timhortons.com](https://locations.timhortons.com/) , [Dunkin Donuts: odditysoftware.com](http://www.odditysoftware.com/download/download.php?filename=dunkin-donuts.zip) | [flowingdata.com](http://flowingdata.com/2014/03/18/coffee-place-geography/)
 | 7 | 2018-05-14 | [Star Wars Survey](https://github.com/fivethirtyeight/data/blob/master/star-wars-survey/StarWars.csv) | [fivethirtyeight package](https://github.com/rudeboybert/fivethirtyeight)    | [fivethirtyeight.com](https://fivethirtyeight.com/features/americas-favorite-star-wars-movies-and-least-favorite-characters/)  |
-| 8 | 2018-05-21 | [US Honey Production](https://github.com/rfordatascience/tidytuesday/blob/master/data/week8_honey_production.zip) | [USDA](http://usda.mannlib.cornell.edu/MannUsda/viewDocumentInfo.do?documentID=1520), [Kaggle.com](https://www.kaggle.com/jessicali9530/honey-production) | [Bee Culture](http://www.beeculture.com/u-s-honey-industry-report-2016/)
-
+| 8 | 2018-05-21 | [US Honey Production](https://github.com/rfordatascience/tidytuesday/blob/master/data/week8_honey_production.zip) | [USDA](http://usda.mannlib.cornell.edu/MannUsda/viewDocumentInfo.do?documentID=1520), [Kaggle.com](https://www.kaggle.com/jessicali9530/honey-production) | [Bee Culture](http://www.beeculture.com/u-s-honey-industry-report-2016/) |
+| 9 | 2018-05-29 | [Comic book characters](https://github.com/rfordatascience/tidytuesday/blob/master/data/week9_comic_characters.csv) | [FiveThirtyEight package](https://github.com/rudeboybert/fivethirtyeight) | [FiveThirtyEight.com](https://fivethirtyeight.com/features/women-in-comic-books/)|
+| 10 | 2018-06-05 | [Biketown Bikeshare tidy](https://github.com/rfordatascience/tidytuesday/blob/master/data/week10_biketown.zip) [RAW DATA](https://github.com/rfordatascience/tidytuesday/blob/master/data/week10_biketown_raw.zip) | [BiketownPDX](https://www.biketownpdx.com/system-data) | [Biketown](https://www.biketownpdx.com/system-data) [cascadiaRconf/cRaggy](https://cascadiarconf.com/agenda/#craggy) |
+| 11 | 2018-06-12 | [FIFA World Cup Audience](https://github.com/rfordatascience/tidytuesday/blob/master/data/week11_fifa_audience.csv) | [FiveThirtyEight package](https://github.com/rudeboybert/fivethirtyeight) | [FiveThirtyEight.com](https://fivethirtyeight.com/features/how-to-break-fifa/)|
+| 12 | 2018-06-19 | [Hurricanes & Puerto Rico](https://github.com/rfordatascience/tidytuesday/tree/master/data) | [FiveThirtyEight package](https://github.com/rudeboybert/fivethirtyeight) | [FiveThirtyEight.com](https://fivethirtyeight.com/features/the-media-really-has-neglected-puerto-rico/)|
+| 13 | 2018-06-26 | [Alcohol Consumption](https://github.com/rfordatascience/tidytuesday/tree/master/data) | [FiveThirtyEight package](https://github.com/rudeboybert/fivethirtyeight) | [FiveThirtyEight.com](https://fivethirtyeight.com/features/dear-mona-followup-where-do-people-drink-the-most-beer-wine-and-spirits/)|
+| 14 | 2018-07-03 | [Global Life Expectancy](https://github.com/rfordatascience/tidytuesday/tree/master/data) | [ourworldindata.org](https://ourworldindata.org/) | [ourworldindata.org](https://ourworldindata.org/life-expectancy)|
 ***  
 
 # Useful links
