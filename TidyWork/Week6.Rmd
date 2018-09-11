@@ -1,0 +1,60 @@
+---
+title: "Week 6 - Covfefe!"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+library(readxl)
+
+coffee <- read_xlsx("../data/week6_coffee_chains.xlsx")
+```
+
+
+```{r}
+unique(coffee$`Ownership Type`)
+unique(coffee$Brand)
+```
+Where has Dunkin gone?
+
+# What's the distribution of coffee by country state? by zip code?
+
+```{r}
+coffee %>% group_by(Brand) %>% tally
+
+
+coffee %>% 
+  filter(Brand == "Starbucks", Country == "US") %>% 
+  mutate(zipcode = str_extract(Postcode,"\\d{5}")) %>% # hmmm going to need to do some smooshing -- regex to the rescue!
+  group_by(zipcode) %>% tally
+```
+
+
+I feel like I always end up plotting these things spatially... really should branch out more. 
+# Dot Density map??
+```{r}
+library(fiftystater)
+
+stateAbbr <- read_tsv("../data/stateAbbr.txt", skip = 1) 
+starbucks <- coffee %>% 
+  filter(Brand == "Starbucks", Country == "US", 
+         !(`State/Province` %in% c("AK", "HI"))) %>% 
+  rename(State = `State/Province`) %>%
+  left_join(., stateAbbr, by = c("State" = "Abbreviation"))
+  
+
+# inspired by @PaulCampell91
+p <- ggplot(starbucks) +
+  geom_map(aes(map_id = tolower(State.y)), map = map_data("state"), fill = "white") +
+  geom_point(aes(Longitude, Latitude), color = "#2ca25f") +
+  coord_sf(crs = 4326, datum = NA) +
+  labs(x = NULL, y = NULL,
+       title = "Coffee USA",
+       subtitle = "Starbucks in the US",
+       caption = "Tidy Tuesday 6 - Dot Density Map of US Starbucks")
+```
+
